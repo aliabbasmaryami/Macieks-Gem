@@ -1,0 +1,40 @@
+body {
+	margin: 0 auto;
+	background: #232323;
+}
+.racer {
+	transition-duration: 500ms;
+	-moz-transition-duration: 500ms;
+    -webkit-transition-duration: 500ms;
+	transition-property: transform;
+	-moz-transition-property: transform;
+    -webkit-transition-property: transform;
+	transition-timing-function: linear;
+	-moz-transition-timing-function: linear;
+    -webkit-transition-timing-function: linear;
+}
+.restart {
+	padding: 20px;
+	cursor: pointer;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	border-radius: 100px;
+	height: 80px;
+	width: 80px;
+	transition: 200ms;
+	font-size: 2em;
+	border: none;
+	box-shadow: 0px 4px 4px #000;
+}
+.restart:hover {
+	height: 90px;
+	width: 90px;
+	bottom: 15px;
+	right: 15px;
+}
+.goldMedal, .silverMedal, .bronzeMedal {
+	transition: 500ms;
+}
