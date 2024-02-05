@@ -1,0 +1,57 @@
+body {
+  font-size: calc(20px + (60 - 20) * (100vw - 320px) / (2560 - 320));
+  height: 100dvh;
+  width: 100dvw;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  overflow: auto;
+  background: linear-gradient(
+    315deg,
+    rgb(255, 181, 250) 3%,
+    rgb(192, 223, 255) 38%,
+    rgb(192, 255, 251) 68%,
+    rgb(255, 161, 161) 98%
+  );
+  animation: gradient 120s ease infinite;
+  background-size: 400% 400%;
+  background-attachment: fixed;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(
+      315deg,
+      rgb(111 2 103) 3%,
+      rgb(0 60 123) 38%,
+      rgb(0 95 89) 68%,
+      rgb(117 0 0) 98%
+    );
+  }
+}
+#message {
+  text-align: center;
+}
+#checkYear {
+  text-align: center;
+  font-size: 3.5em;
+  margin: 0;
+  padding: 0.5em;
+  padding-right: 0;
+}
+@media screen and (max-width: 250px) {
+  #checkYear {
+    font-size: 1.5em;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
