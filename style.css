@@ -1,184 +1,198 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600&display=swap");
+@property --bgrotate {
+  initial-value: 120deg;
+  inherits: false;
+  syntax: "<angle>";
+}
+@property --bgrotate2 {
+  initial-value: 220deg;
+  inherits: false;
+  syntax: "<angle>";
+}
+@property --text {
+  initial-value: 220deg;
+  inherits: false;
+  syntax: "<angle>";
+}
 
 :root {
-  --primary-clr: rgba(228, 228, 229, 1);
+  --ar: 0.718;
+  --br: 4.55% / 3.5%;
+  --hl: 0;
+  --bg: hsl(var(--canvas), 15%, 12%);
+  --t: all 0.66s
+    linear(
+      0,
+      0.007,
+      0.028 2.1%,
+      0.112 4.6%,
+      0.224 6.9%,
+      0.604 14.2%,
+      0.713,
+      0.803,
+      0.879,
+      0.939,
+      0.985 26.2%,
+      1.019 28.9%,
+      1.034 30.7%,
+      1.045,
+      1.051 34.8%,
+      1.053 37.2%,
+      1.046 41.6%,
+      1.012 54.7%,
+      1.001 62.8%,
+      0.997 73%,
+      1
+    );
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Nunito", sans-serif;
-}
-
-body {
+.card {
+  width: 320px;
+  aspect-ratio: var(--ar);
+  border-radius: var(--br);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  width: 100%;
-  background: url(https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/8727c9b1-be21-4932-a221-4257b59a74dd);
-  background-repeat: no-repeat;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  animation: slidein 120s forwards infinite alternate;
+  background-size: 100% 100%;
+  background-position: 0px 0px, 0px 0px, 0px 0px, 50% 50%, 0px 0px, 0px 0px;
+  background-image: radial-gradient(
+      farthest-side circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+      hsla(222, 100%, 94%, var(--hl)) 8%,
+      hsla(222, 100%, 80%, var(--hl)) 22%,
+      hsla(222, 100%, 70%, 0) 66%
+    ),
+    radial-gradient(32% 51% at 7% 32%, #57d6ffff 0%, #073aff00 100%),
+    radial-gradient(35% 52% at 82% 67%, #00ffaac4 0%, #073aff00 100%),
+    radial-gradient(80% 80% at 50% 50%, #00c1ffff 27%, #073aff00 58%),
+    conic-gradient(
+      from var(--bgrotate) at 50% 50%,
+      #941fffff 5%,
+      #07c6ff00 21%,
+      #07c6ff00 36%,
+      #00ffaaff 48%,
+      #00ffaaff 51%,
+      #07c6ff00 61%,
+      #07c6ff00 78%,
+      #941fffff 95%
+    ),
+    conic-gradient(
+      from var(--bgrotate2) at 50% 50%,
+      #00ffaaff 0%,
+      #00c1ffff 34%,
+      #00c1ffff 64%,
+      #00ffaaff 100%
+    );
+  background-blend-mode: color-dodge, normal, normal, normal, normal;
+  animation: glow-bg 20s linear infinite;
+  transform: translate3d(0, 0, 0.1px);
+  z-index: 1;
+}
+.card:hover {
+  --hl: 1;
 }
 
-@keyframes slidein {
-  0%,
-  100% {
-    background-position: 20% 0%;
-    background-size: 3400px;
-  }
-  50% {
-    background-position: 100% 0%;
-    background-size: 2400px;
-  }
-}
-
-.album-cover {
-  width: 90%;
-}
-
-.swiper {
-  width: 100%;
-  padding: 40px 0 100px;
-}
-
-.swiper-slide {
-  position: relative;
-  max-width: 200px;
-  aspect-ratio: 1/1;
-  border-radius: 10px;
-}
-
-.swiper-slide img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+.card::before,
+.card::after,
+.inside {
   border-radius: inherit;
-  -webkit-box-reflect: below -5px linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.4));
-  transform-origin: center;
-  transform: perspective(800px);
-  transition: 0.3s ease-out;
-  pointer-events: none;
-  user-select: none;
+  content: "";
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+  inset: 1px;
+  position: absolute;
 }
 
-.swiper-slide-active .overlay {
+.inside {
   display: flex;
   align-items: center;
+  border-radius: inherit;
+  overflow: hidden;
   justify-content: center;
+  background: hsl(var(--canvas), 15%, 16%);
+  z-index: 2;
+}
+
+.inside::after {
+  content: "";
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 98%;
-  background-color: rgba(28, 22, 37, 0.6);
-  border-radius: inherit;
-  opacity: 0;
-  transition: all 0.4s linear;
+  background-image: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    hsl(248, 25%, 80%) 12%,
+    hsla(207, 40%, 30%, 0.2) 90%
+  );
+  mix-blend-mode: overlay;
+  filter: brightness(1) contrast(1.2);
+  opacity: var(--hl);
+  transition: var(--t);
 }
 
-.swiper-slide:hover .overlay {
-  opacity: 1;
+.card::after {
+  background: inherit;
+  inset: -10px;
+  scale: 0.8;
+  filter: blur(36px) brightness(1) contrast(0.85) saturate(1.4);
+  z-index: 0;
+  transition: var(--t);
 }
 
-.swiper-slide .overlay ion-icon {
-  opacity: 0;
+.card:hover::after {
+  scale: 0.9;
+  filter: blur(36px) brightness(1) contrast(1) saturate(1);
 }
 
-.swiper-slide-active:hover .overlay ion-icon {
-  font-size: 4rem;
-  color: #eb0b0b;
-  opacity: 1;
-  cursor: pointer;
+.card::before {
+  content: "";
+  inset: 0;
+  box-shadow: rgba(0, 0, 0, 0.9) 0px 10px 20px -5px;
+  z-index: 1;
 }
 
-/* Music Player */
-
-.music-player {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: var(--primary-clr);
-  width: 380px;
-  padding: 10px 30px;
-  border-radius: 20px;
+@keyframes glow-bg {
+  0% {
+    --bgrotate: 0deg;
+    --bgrotate2: 0deg;
+    --text: 90deg;
+  }
+  50% {
+    --bgrotate2: 360deg;
+    --text: 260deg;
+  }
+  100% {
+    --bgrotate: 360deg;
+    --bgrotate2: 0deg;
+    --text: 90deg;
+  }
 }
 
-.music-player h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.6;
+main,
+body,
+html {
+  display: block;
+  min-height: 100%;
+  min-width: 100%;
 }
 
-.music-player p {
-  font-size: 1rem;
-  font-weight: 400;
-  opacity: 0.6;
-}
-
-/* Music Player Progress */
-
-#progress {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  height: 7px;
-  background: rgba(163, 162, 164, 0.4);
-  border-radius: 4px;
-  margin: 32px 0 24px;
-  cursor: pointer;
-}
-
-#progress::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-  background: rgba(163, 162, 164, 0.9);
-  width: 16px;
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  outline: 4px solid var(--primary-clr);
-  box-shadow: 0 6px 10px rgba(5, 36, 28, 0.3);
-}
-
-/* Music Player Controls */
-
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.controls button {
+main {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  aspect-ratio: 1/1;
-  margin: 20px;
-  background: rgba(163, 162, 164, 0.3);
-  color: var(--primary-clr);
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  outline: 0;
-  font-size: 1.1rem;
-  box-shadow: 0 10px 20px rgba(5, 36, 28, 0.3);
-  cursor: pointer;
-  transition: all 0.3s linear;
 }
 
-.controls button:is(:hover, :focus-visible) {
-  transform: scale(0.96);
-}
-
-.controls button:nth-child(2) {
-  transform: scale(1.3);
-}
-
-.controls button:nth-child(2):is(:hover, :focus-visible) {
-  transform: scale(1.25);
+h2 {
+  font-size: 2em;
+  font-weight: 500;
+  text-wrap: balance;
+  text-align: center;
+  animation: glow-bg 14s ease infinite;
+  background-image: linear-gradient(
+    to bottom,
+    white 40%,
+    hsl(var(--text, 120deg) 100% 60%)
+  );
+  background-size: 1em 1lh;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  filter: drop-shadow(0 0.025em 0.05em rgba(0, 0, 0, 0.2))
+    drop-shadow(0 1px 1px black);
 }

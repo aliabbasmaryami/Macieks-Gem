@@ -1,141 +1,63 @@
-const progress = document.getElementById("progress");
-const song = document.getElementById("song");
-const controlIcon = document.getElementById("controlIcon");
-const playPauseButton = document.querySelector(".play-pause-btn");
-const forwardButton = document.querySelector(".controls button.forward");
-const backwardButton = document.querySelector(".controls button.backward");
-const songName = document.querySelector(".music-player h1");
-const artistName = document.querySelector(".music-player p");
+const $card = document.querySelector(".card");
 
-const songs = [
-  {
-    title: "Symphony",
-    name: "Clean Bandit ft. Zara Larsson",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Clean-Bandit-Symphony.mp3"
-  },
-  {
-    title: "Pawn It All",
-    name: "Alicia Keys",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Pawn-It-All.mp3"
-  },
-  {
-    title: "Seni Dert Etmeler",
-    name: "Madrigal",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Madrigal-Seni-Dert-Etmeler.mp3"
-  },
-  {
-    title: "Instant Crush",
-    name: "Daft Punk ft. Julian Casablancas",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Daft-Punk-Instant-Crush.mp3"
-  },
-  {
-    title: "As It Was",
-    name: "Harry Styles",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Harry-Styles-As-It-Was.mp3"
-  },
+/**
+ * return a value that has been rounded to a set precision
+ * @param {Number} value the value to round
+ * @param {Number} precision the precision (decimal places), default: 3
+ * @returns {Number}
+ */
+const round = (value, precision = 3) => parseFloat(value.toFixed(precision));
 
-  {
-    title: "Physical",
-    name: "Dua Lipa",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Dua-Lipa-Physical.mp3"
-  },
-  {
-    title: "Delicate",
-    name: "Taylor Swift",
-    source:
-      "https://github.com/ecemgo/mini-samples-great-tricks/raw/main/song-list/Taylor-Swift-Delicate.mp3"
+/**
+ * return a value that has been limited between min & max
+ * @param {Number} value the value to clamp
+ * @param {Number} min minimum value to allow, default: 0
+ * @param {Number} max maximum value to allow, default: 100
+ * @returns {Number}
+ */
+const clamp = (value, min = 0, max = 100) => {
+  return Math.min(Math.max(value, min), max);
+};
+
+/**
+ * return a value that has been re-mapped according to the from/to
+ * - for example, adjust(10, 0, 100, 100, 0) = 90
+ * @param {Number} value the value to re-map (or adjust)
+ * @param {Number} fromMin min value to re-map from
+ * @param {Number} fromMax max value to re-map from
+ * @param {Number} toMin min value to re-map to
+ * @param {Number} toMax max value to re-map to
+ * @returns {Number}
+ */
+const adjust = (value, fromMin, fromMax, toMin, toMax) => {
+  return round(
+    toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin)
+  );
+};
+
+const cardUpdate = (e) => {
+  // normalise touch/mouse
+  var pos = [e.clientX, e.clientY];
+  e.preventDefault();
+  if (e.type === "touchmove") {
+    pos = [e.touches[0].clientX, e.touches[0].clientY];
   }
-];
+  var dimensions = $card.getBoundingClientRect();
+  var l = pos[0] - dimensions.left;
+  var t = pos[1] - dimensions.top;
+  var h = dimensions.height;
+  var w = dimensions.width;
+  var px = clamp(Math.abs((100 / w) * l), 0, 100);
+  var py = clamp(Math.abs((100 / h) * t), 0, 100);
 
-let currentSongIndex = 3;
+  $card.setAttribute(
+    "style",
+    `
+      --pointer-x: ${px}%;
+      --pointer-y: ${py}%;
+    `
+  );
+};
 
-function updateSongInfo() {
-  songName.textContent = songs[currentSongIndex].title;
-  artistName.textContent = songs[currentSongIndex].name;
-  song.src = songs[currentSongIndex].source;
-
-  song.addEventListener("loadeddata", function () {});
-}
-
-song.addEventListener("timeupdate", function () {
-  if (!song.paused) {
-    progress.value = song.currentTime;
-  }
-});
-
-song.addEventListener("loadedmetadata", function () {
-  progress.max = song.duration;
-  progress.value = song.currentTime;
-});
-
-function pauseSong() {
-  song.pause();
-  controlIcon.classList.remove("fa-pause");
-  controlIcon.classList.add("fa-play");
-}
-
-function playSong() {
-  song.play();
-  controlIcon.classList.add("fa-pause");
-  controlIcon.classList.remove("fa-play");
-}
-
-function playPause() {
-  if (song.paused) {
-    playSong();
-  } else {
-    pauseSong();
-  }
-}
-
-playPauseButton.addEventListener("click", playPause);
-
-progress.addEventListener("input", function () {
-  song.currentTime = progress.value;
-});
-
-progress.addEventListener("change", function () {
-  playSong();
-});
-
-forwardButton.addEventListener("click", function () {
-  currentSongIndex = (currentSongIndex + 1) % songs.length;
-  updateSongInfo();
-  playPause();
-});
-
-backwardButton.addEventListener("click", function () {
-  currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-  updateSongInfo();
-  playPause();
-});
-
-updateSongInfo();
-
-var swiper = new Swiper(".swiper", {
-  effect: "coverflow",
-  centeredSlides: true,
-  initialSlide: 3,
-  slidesPerView: "auto",
-  allowTouchMove: false,
-  spaceBetween: 40,
-  coverflowEffect: {
-    rotate: 25,
-    stretch: 0,
-    depth: 50,
-    modifier: 1,
-    slideShadows: false
-  },
-  navigation: {
-    nextEl: ".forward",
-    prevEl: ".backward"
-  }
-});
-
-// Inspiration: https://dribbble.com/shots/5455156-Car-HMI-assistant-Album-switching
+$card.addEventListener("mousemove", cardUpdate);
+$card.addEventListener("touchmove", cardUpdate);
