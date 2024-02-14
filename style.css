@@ -1,198 +1,57 @@
-@property --bgrotate {
-  initial-value: 120deg;
-  inherits: false;
-  syntax: "<angle>";
+body {
+	margin: 0 auto;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0%25' stop-color='skyblue' stop-opacity='1' /%3E%3Cstop offset='70%25' stop-color='skyblue' stop-opacity='0.3' /%3E%3Cstop offset='100%25' stop-color='skyblue' stop-opacity='0' /%3E%3C/linearGradient%3E%3Cfilter id='sky'%3E%3CfeTurbulence baseFrequency='0.003 0.005' numOctaves='10' /%3E%3CfeColorMatrix type='hueRotate' values='0'%3E%3Canimate attributeName='values' from='0' to='360' dur='30s' repeatCount='indefinite' /%3E%3C/feColorMatrix%3E%3CfeColorMatrix values='4.2 -4.6 3.1 -1.4 4.8 -0.8 -0.8 -1.9 2.7 4.4 0.8 -3.6 4.1 1.9 4.3 -3.4 0.1 1.7 3.5 -2.1' /%3E%3CfeComposite operator='in' in2='SourceGraphic' /%3E%3C/filter%3E%3C/defs%3E%3Crect height='100%25' width='100%25' fill='url(%23grad)' /%3E%3Crect height='100%25' width='100%25' filter='url(%23sky)' /%3E%3C/svg%3E");
+	height: 100vh;
+	overflow-y: hidden;
 }
-@property --bgrotate2 {
-  initial-value: 220deg;
-  inherits: false;
-  syntax: "<angle>";
+.newStreet {
+	cursor: pointer;
 }
-@property --text {
-  initial-value: 220deg;
-  inherits: false;
-  syntax: "<angle>";
+.newStreet {
+	position: fixed;
+	bottom: 15px;
+	right: 15px;
+	height: 80px;
+	width: 80px;
+	font-family: monospace;
+	text-transform: uppercase;
 }
-
-:root {
-  --ar: 0.718;
-  --br: 4.55% / 3.5%;
-  --hl: 0;
-  --bg: hsl(var(--canvas), 15%, 12%);
-  --t: all 0.66s
-    linear(
-      0,
-      0.007,
-      0.028 2.1%,
-      0.112 4.6%,
-      0.224 6.9%,
-      0.604 14.2%,
-      0.713,
-      0.803,
-      0.879,
-      0.939,
-      0.985 26.2%,
-      1.019 28.9%,
-      1.034 30.7%,
-      1.045,
-      1.051 34.8%,
-      1.053 37.2%,
-      1.046 41.6%,
-      1.012 54.7%,
-      1.001 62.8%,
-      0.997 73%,
-      1
-    );
+.streetSign {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 200%;
+	font-family: monospace;
+	padding: 8px 36px 8px 36px;
+	border-radius: 10px;
+	background: forestgreen;
+	color: white;
+	text-align: center;
+	border: 4px solid white;
+	box-shadow: 2px 2px 5px -3px #000;
+	white-space: nowrap;
+	z-index: 2;
+	text-transform: uppercase;
 }
-
-.card {
-  width: 320px;
-  aspect-ratio: var(--ar);
-  border-radius: var(--br);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr);
-  position: relative;
-  background-size: 100% 100%;
-  background-position: 0px 0px, 0px 0px, 0px 0px, 50% 50%, 0px 0px, 0px 0px;
-  background-image: radial-gradient(
-      farthest-side circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
-      hsla(222, 100%, 94%, var(--hl)) 8%,
-      hsla(222, 100%, 80%, var(--hl)) 22%,
-      hsla(222, 100%, 70%, 0) 66%
-    ),
-    radial-gradient(32% 51% at 7% 32%, #57d6ffff 0%, #073aff00 100%),
-    radial-gradient(35% 52% at 82% 67%, #00ffaac4 0%, #073aff00 100%),
-    radial-gradient(80% 80% at 50% 50%, #00c1ffff 27%, #073aff00 58%),
-    conic-gradient(
-      from var(--bgrotate) at 50% 50%,
-      #941fffff 5%,
-      #07c6ff00 21%,
-      #07c6ff00 36%,
-      #00ffaaff 48%,
-      #00ffaaff 51%,
-      #07c6ff00 61%,
-      #07c6ff00 78%,
-      #941fffff 95%
-    ),
-    conic-gradient(
-      from var(--bgrotate2) at 50% 50%,
-      #00ffaaff 0%,
-      #00c1ffff 34%,
-      #00c1ffff 64%,
-      #00ffaaff 100%
-    );
-  background-blend-mode: color-dodge, normal, normal, normal, normal;
-  animation: glow-bg 20s linear infinite;
-  transform: translate3d(0, 0, 0.1px);
-  z-index: 1;
+.changing {
+	animation: spin 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 1;
 }
-.card:hover {
-  --hl: 1;
+@keyframes spin {
+	from {
+		transform: translate(-50%, -50%) rotateY(0deg);
+	}
+	to {
+		transform: translate(-50%, -50%) rotateY(360deg);
+	}
 }
-
-.card::before,
-.card::after,
-.inside {
-  border-radius: inherit;
-  content: "";
-  grid-column: 1/-1;
-  grid-row: 1/-1;
-  inset: 1px;
-  position: absolute;
-}
-
-.inside {
-  display: flex;
-  align-items: center;
-  border-radius: inherit;
-  overflow: hidden;
-  justify-content: center;
-  background: hsl(var(--canvas), 15%, 16%);
-  z-index: 2;
-}
-
-.inside::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(
-    farthest-corner circle at var(--pointer-x) var(--pointer-y),
-    hsl(248, 25%, 80%) 12%,
-    hsla(207, 40%, 30%, 0.2) 90%
-  );
-  mix-blend-mode: overlay;
-  filter: brightness(1) contrast(1.2);
-  opacity: var(--hl);
-  transition: var(--t);
-}
-
-.card::after {
-  background: inherit;
-  inset: -10px;
-  scale: 0.8;
-  filter: blur(36px) brightness(1) contrast(0.85) saturate(1.4);
-  z-index: 0;
-  transition: var(--t);
-}
-
-.card:hover::after {
-  scale: 0.9;
-  filter: blur(36px) brightness(1) contrast(1) saturate(1);
-}
-
-.card::before {
-  content: "";
-  inset: 0;
-  box-shadow: rgba(0, 0, 0, 0.9) 0px 10px 20px -5px;
-  z-index: 1;
-}
-
-@keyframes glow-bg {
-  0% {
-    --bgrotate: 0deg;
-    --bgrotate2: 0deg;
-    --text: 90deg;
-  }
-  50% {
-    --bgrotate2: 360deg;
-    --text: 260deg;
-  }
-  100% {
-    --bgrotate: 360deg;
-    --bgrotate2: 0deg;
-    --text: 90deg;
-  }
-}
-
-main,
-body,
-html {
-  display: block;
-  min-height: 100%;
-  min-width: 100%;
-}
-
-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-h2 {
-  font-size: 2em;
-  font-weight: 500;
-  text-wrap: balance;
-  text-align: center;
-  animation: glow-bg 14s ease infinite;
-  background-image: linear-gradient(
-    to bottom,
-    white 40%,
-    hsl(var(--text, 120deg) 100% 60%)
-  );
-  background-size: 1em 1lh;
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
-  filter: drop-shadow(0 0.025em 0.05em rgba(0, 0, 0, 0.2))
-    drop-shadow(0 1px 1px black);
+.pole {
+	position: absolute;
+	bottom: 0px;
+	left: 50%;
+	transform: translate(-50%);
+	height: 50%;
+	width: 20px;
+	background: linear-gradient(90deg, silver 20%, gray, silver 98%);
+	box-shadow: 2px 2px 5px -3px #000;
 }
