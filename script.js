@@ -169,9 +169,6 @@ var setPath = (c, c2) => {
   c2.setPath();
 };
 
-//ca=[ca[0]];
-
-//for (let i=0; i<5; i++) {
 for (let i = 0; i < 8; i++) addPath(ca[i]);
 
 const dmx = new DOMMatrix([-1, 0, 0, 1, 0, 0]);
@@ -205,7 +202,7 @@ var draw = () => {
   ctx.strokeStyle = color.getRGB();
   ctx.stroke(p);
   ctx.setTransform(1, 0, 0, 1, CSIZE, CSIZE);
-  ctx.strokeStyle = "#0000000C";
+  ctx.strokeStyle = "#00affef";
   ctx.lineWidth = 10;
   ctx.stroke(p);
 };
