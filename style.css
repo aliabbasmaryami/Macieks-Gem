@@ -1,0 +1,76 @@
+@use 'sass:math';
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #00afef;
+  color: #fff;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  perspective: 1000px;
+  overflow: hidden;
+
+  * {
+    transform-style: preserve-3d;
+  }
+}
+
+.scene {
+  position: relative;
+  animation: sceneY 8s infinite ease-in-out alternate,
+    rotate 50s infinite linear;
+
+  @keyframes sceneY {
+    from {
+      transform: rotateY(60deg);
+    }
+    to {
+      transform: rotateY(-60deg);
+    }
+  }
+
+  @keyframes rotate {
+    to {
+      rotate: 1turn;
+    }
+  }
+}
+
+.shape {
+  position: absolute;
+  animation: rotate 15s infinite linear;
+
+  $bg: "radial-gradient(closest-side, #0003, #0000)";
+  @for $i from 0 to 8 {
+    $x: math.cos($i * 45deg) * 64 + 128;
+    $y: math.sin($i * 45deg) * 64 + 128;
+    $color: hsl(($i * 45) 75% 75%);
+    $bg: $bg +
+      ", radial-gradient(circle at #{$x}px #{$y}px, #{$color} 32px, transparent 0)";
+  }
+
+  i {
+    position: absolute;
+    inset: -128px;
+    border-radius: 50%;
+    background-image: #{$bg};
+    transform: translateZ(var(--tz)) rotate(var(--angle)) scale(var(--scale));
+
+    $iCount: 192;
+    @for $i from 0 to $iCount {
+      &:nth-child(#{$i + 1}) {
+        --tz: #{($i - $iCount / 2) * 1.5}px;
+        // --tz: #{math.sin(($i / $iCount) * 180deg - 90deg) * 128}px;
+        --angle: #{$i * 0.5}deg;
+        --scale: #{math.cos($i / $iCount * 180deg - 90deg) + 0.01};
+      }
+    }
+  }
+}
